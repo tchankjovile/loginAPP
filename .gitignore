@@ -1,0 +1,47 @@
+# === Environnements virtuels ===
+venv/
+env/
+
+# === Fichiers Python compilés ===
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# === Fichiers de log ===
+*.log
+
+# === Éditeurs / IDE ===
+.idea/              # PyCharm
+.vscode/            # Visual Studio Code (au cas où)
+*.sublime-project
+*.sublime-workspace
+
+# === Fichiers système (Windows et macOS) ===
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# === Bases de données locales (tu utilises MySQL donc pas de *.sqlite3 ici) ===
+*.sqlite3
+
+# === Media (si généré dynamiquement, sinon à adapter) ===
+media/
+staticfiles/
+
+# === Fichiers temporaires / cache ===
+*.bak
+*.tmp
+*.swp
+*.~*
+
+# === Fichiers de configuration privés ===
+*.env
+.env.*
+
+# === Migrations (facultatif : à ignorer si générées automatiquement) ===
+
+# === PyInstaller ===
+dist/
+build/
+*.spec
