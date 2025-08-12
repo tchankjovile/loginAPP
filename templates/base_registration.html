@@ -1,0 +1,41 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Inscription{% endblock %}</title>
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+  <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css'>
+    <link rel="stylesheet" href="{% static 'css/registrationstyle.css' %}">
+</head>
+<body>
+    {% block content %}{% endblock %}
+
+    <!--Start of footer-->
+        <section id="footer">
+            <div class="container">
+                <div class="row text-center">
+                    <div class="col-md-6">
+                        <div class="copyright">
+                            <p>@ 2024 - Design By <span><a href="">&#9798;</a></span></p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="designer">
+                            <p>A Design By <a href="#">TCHANK</a></p>
+                        </div>
+                    </div>
+                </div>
+                <!--End of row-->
+            </div>
+            <!--End of container-->
+        </section>
+        <!--End of footer-->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js'></script>
+<script src="{% static 'js/registrationjs.js' %}"></script>
+</body>
+</html>
