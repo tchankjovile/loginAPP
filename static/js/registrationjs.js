@@ -555,12 +555,6 @@ function debounce(func, wait, immediate) {
 	};
 };
 
-
-
-
-
-
-
 /*! jQuery Validation Plugin - v1.14.0 - 6/30/2015
  * https://jqueryvalidation.org/
  * Copyright (c) 2015 Jörn Zaefferer; Licensed MIT */

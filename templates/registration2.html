@@ -1,0 +1,111 @@
+{% extends 'base_registration.html' %}
+{% load static %}
+
+
+    {% block formheader %}
+<form action="" method="POST">
+								{%csrf_token%}
+		                    	<div class="wizard-header">
+		                        	<h3 class="wizard-title">
+		                        		S'incrire
+		                        	</h3>
+									<h5>Remplissez correctement vos informations</h5>
+		                    	</div>
+								<div class="wizard-navigation">
+									<ul>
+										<li><a href="#captain" data-toggle="tab">Votre profile</a></li>
+			                            <li><a href="#details" data-toggle="tab" class= "active">Compte</a></li>
+			                            <li><a href="#description" data-toggle="tab">Autres Details</a></li>
+			                        </ul>
+								</div>
+
+    {% endblock %}
+
+
+{% block content %}
+
+
+
+                                <div class="tab-pane" id="details">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <h4 class="info-text">Renseignements relatifs au compte</h4>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    <i class="material-icons">assignment_ind</i>
+                                                </span>
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">Nom d'utilisateur</label>
+                                                    <input name="username" type="text" class="form-control" required>
+                                                </div>
+                                            </div>
+
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    <i class="material-icons">lock_outline</i>
+                                                </span>
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">Mot de passe</label>
+                                                    <input name="password" type="password" class="form-control" title="" required>
+                                                </div>
+                                            </div>
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    <i class="material-icons">lock_outline</i>
+                                                </span>
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">Confirmation de mot de passe</label>
+                                                    <input name="confirm_password" type="password" class="form-control" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    <i class="material-icons">phone_android</i>
+                                                </span>
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">Numéro de téléphone</label>
+                                                    <input name="numero_telephone" type="tel" class="form-control" required>
+                                                </div>
+                                            </div>
+                                            {% if user_type == "candidat" %}
+                                            <!-- Champ budget (visible seulement pour candidat) -->
+                                            <div class="input-group candidat-field">
+                                                <span class="input-group-addon">
+                                                    <i class="material-icons">attach_money</i>
+                                                </span>
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">Votre Budget</label>
+                                                    <input name="budget" type="number" class="form-control" min="0" required>
+                                                </div>
+                                            </div>
+                                            {% endif %}
+
+                                            {% if user_type == "partenaire" %}
+                                            <!-- Champ nom (visible seulement pour partenaire) -->
+                                            <div class="input-group partenaire-field" >
+                                                <span class="input-group-addon">
+                                                    <i class="material-icons">person</i>
+                                                </span>
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">Nom</label>
+                                                    <input name="nom" type="text" class="form-control">
+                                                </div>
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+
+{% endblock %}
+
+{% block bouttonnext %}
+<a href= "{% url 'sinscrire3' %}"><input type='submit' class='btn btn-next btn-fill btn-danger btn-wd' name='next' value='suivant'/></a>
+{% endblock %}
+
+{% block bouttonprevious %}
+    <a href= "{% url 'sinscrire_name' %}"><input type='button' class='btn btn-previous btn-fill btn-default btn-wd' name='revenir' value='revenir' /></a>
+{% endblock %}

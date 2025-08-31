@@ -1,0 +1,412 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'img/logoinstitut.png' %}" rel="icon">
+    <title>Connexion</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            display: flex;
+            width: 100%;
+            max-width: 1000px;
+            min-height: 550px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .left-panel {
+            flex: 1;
+            background: #FF0000; /* Rouge canadien */
+            color: white;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .left-panel::before {
+            content: "";
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: white;
+            border-radius: 50%;
+            top: -75px;
+            left: -75px;
+            opacity: 0.2;
+        }
+
+        .left-panel::after {
+            content: "";
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: white;
+            border-radius: 50%;
+            bottom: -100px;
+            right: -100px;
+            opacity: 0.2;
+        }
+
+        .logo {
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: #FF0000;
+            font-weight: bold;
+            font-size: 24px;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .panel-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .panel-title {
+            font-size: 28px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .panel-description {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .features {
+            list-style-type: none;
+        }
+
+        .features li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .features li::before {
+            content: "✓";
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            background: white;
+            color: #FF0000;
+            border-radius: 50%;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .right-panel {
+            flex: 1;
+            background: white;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .form-title {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .form-subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            border-color: #FF0000;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.1);
+        }
+
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .remember {
+            display: flex;
+            align-items: center;
+        }
+
+        .remember input {
+            margin-right: 8px;
+        }
+
+        .forgot-password {
+            color: #FF0000;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 15px;
+            background: #FF0000;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-login:hover {
+            background: #cc0000;
+        }
+
+        .separator {
+            display: flex;
+            align-items: center;
+            margin: 25px 0;
+            color: #666;
+        }
+
+        .separator::before,
+        .separator::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #ddd;
+        }
+
+        .separator span {
+            padding: 0 15px;
+        }
+
+        .social-login {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .social-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .social-btn:hover {
+            background: #e9e9e9;
+        }
+
+        .register-link {
+            text-align: center;
+            color: #666;
+        }
+
+        .register-link a {
+            color: #FF0000;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                max-width: 400px;
+            }
+
+            .left-panel {
+                display: none;
+            }
+        }
+
+        .error-message {
+            color: #FF0000;
+            background: rgba(255, 0, 0, 0.1);
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left-panel">
+            <div class="logo">
+                <div class="logo-icon">ITTE</div>
+                <div class="logo-text">INSTITUT TCF TEF EXPRESS</div>
+            </div>
+            <div class="panel-content">
+                <h2 class="panel-title">Accédez à votre espace sécurisé</h2>
+                <p class="panel-description">Connectez-vous pour accéder à votre profil</p>
+                <ul class="features">
+                    <li>Interfaces intuitives</li>
+                    <li>Sécurité des données conforme aux normes</li>
+                    <li>Assistance technique disponible 24/7</li>
+                    <li>Accès à tous nos services</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="right-panel">
+            <h2 class="form-title">Connexion</h2>
+            <p class="form-subtitle">Entrez vos identifiants pour accéder à votre compte</p>
+
+            <div class="error-message" id="errorMessage">
+                Identifiant ou mot de passe incorrect. Veuillez réessayer.
+            </div>
+
+            <form action="/login/" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="username">Nom d'utilisateur</label>
+                    <input type="text" id="username" name="username" placeholder="Entrez votre nom d'utilisateur" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" id="password" name="password" placeholder="Entrez votre mot de passe" required>
+                </div>
+
+                <div class="remember-forgot">
+                    <div class="remember">
+                        <input type="checkbox" id="remember" name="remember">
+                        <label for="remember">Se souvenir de moi</label>
+                    </div>
+                    <a href="#" onclick="affichemsg()" class="forgot-password">Mot de passe oublié?</a>
+                    <script>
+                        function affichemsg(){
+                            alert("lors de votre inscription nous vous avons enoyé un mail avec vos informations de connexion, allez y regarder");
+                        }
+                    </script>
+                </div>
+
+                <button type="submit" class="btn-login">Se connecter</button>
+            </form>
+
+            <div class="separator">
+                <span>Ou connectez-vous avec</span>
+            </div>
+
+            <div class="social-login">
+                <div class="social-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#FF0000">
+                        <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-2 20h-4v-8h4v8zm-2-10.669c-.989-.669-1.667-1.657-1.667-2.831 0-1.931 1.567-3.5 3.5-3.5s3.5 1.569 3.5 3.5c0 1.174-.678 2.162-1.667 2.831v3.169h-3v-3.169zm6 3.169h-3v2h3v-2zm-6 0h-3v2h3v-2z"/>
+                    </svg>
+                </div>
+                <div class="social-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#FF0000">
+                        <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm4.441 16.892c-2.102.144-6.784.144-8.883 0-2.276-.156-2.541-1.27-2.558-4.892.017-3.629.285-4.736 2.558-4.892 2.099-.144 6.782-.144 8.883 0 2.277.156 2.541 1.27 2.559 4.892-.018 3.629-.285 4.736-2.559 4.892zm-6.441-7.234l4.917 2.338-4.917 2.346v-4.684z"/>
+                    </svg>
+                </div>
+                <div class="social-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#FF0000">
+                        <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm4.441 16.892c-2.102.144-6.784.144-8.883 0-2.276-.156-2.541-1.27-2.558-4.892.017-3.629.285-4.736 2.558-4.892 2.099-.144 6.782-.144 8.883 0 2.277.156 2.541 1.27 2.559 4.892-.018 3.629-.285 4.736-2.559 4.892zm-6.441-7.234l4.917 2.338-4.917 2.346v-4.684z"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="register-link">
+                Vous n'avez pas de compte? <a href="{% url 'sinscrire_name' %}">Créer un compte</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simulation d'erreur de connexion (à retirer en production)
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Simulation d'une erreur pour la démo
+            if (username === 'demo' && password === 'error') {
+                document.getElementById('errorMessage').style.display = 'block';
+            } else {
+                // Soumission normale du formulaire
+                this.submit();
+            }
+        });
+    </script>
+</body>
+</html>

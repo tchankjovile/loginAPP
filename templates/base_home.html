@@ -1,0 +1,405 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Agent Profile - HomeSpace Bootstrap Template</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+
+  <!-- Favicons -->
+  <link href="{% static 'img/favicon.png' %}" rel="icon">
+  <link href="{% static 'img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'css/bootstraphome.min.css' %}" rel="stylesheet">
+  <link href="{% static 'css/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'css/aos.css' %}" rel="stylesheet">
+  <link href="{% static 'css/swiper-bundle.min.css' %}" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="{% static 'css/main.css' %}" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: HomeSpace
+  * Template URL: https://bootstrapmade.com/homespace-bootstrap-real-estate-template/
+  * Updated: Jul 05 2025 with Bootstrap v5.3.7
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body class="agent-profile-page">
+  <!--Start Hedaer Section-->
+  <section id="header">
+      <div class="header-area">
+          <div class="top_header">
+              <div class="container">
+                  <div class="row">
+                      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 zero_mp">
+                          <div class="address">
+                              <i class="fa fa-home floatleft"></i>
+                              <p>CAMEROUN DOUALA, PK16,Face au campus </p>
+                          </div>
+                      </div>
+                      <!--End of col-md-4-->
+                      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 zero_mp">
+                          <div class="phone">
+                              <i class="fa fa-phone floatleft"></i>
+                              <p>+237 654322099 / +237 659688149</p>
+                          </div>
+                      </div>
+                      <!--End of col-md-4-->
+                      <div class="col-md-4">
+                          <div class="social_icon text-right">
+                              <a href="https://web.facebook.com/profile.php?id=100089330243991"><i class="fa fa-facebook"></i></a>
+                              <a href="https://wa.me/+237653673459"><i class="fa fa-whatsapp"></i></a>
+                              <a href=""><i class="fa fa-google-plus"></i></a>
+                              <a href=""><i class="fa fa-youtube"></i></a>
+                          </div>
+                      </div>
+                      <!--End of col-md-4-->
+                  </div>
+                  <!--End of row-->
+              </div>
+              <!--End of container-->
+          </div>
+          <!--End of top header-->
+          <div class="header_menu text-center" data-spy="affix" data-offset-top="50" id="nav">
+              <div class="container">
+                  <nav class="navbar navbar-default zero_mp ">
+                      <!-- Brand and toggle get grouped for better mobile display -->
+                      <div class="navbar-header">
+                          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                              <span class="sr-only">Toggle navigation</span>
+                              <span class="icon-bar"></span>
+                              <span class="icon-bar"></span>
+                              <span class="icon-bar"></span>
+                          </button>
+                          <a class="navbar-brand custom_navbar-brand" href="#"><img src="{% static 'img/logo.png' %}" alt=""></a>
+                      </div>
+                      <!--End of navbar-header-->
+
+                      <!-- Collect the nav links, forms, and other content for toggling -->
+                      <div class="collapse navbar-collapse zero_mp" id="bs-example-navbar-collapse-1">
+                          <ul class="nav navbar-nav navbar-right main_menu">
+                              <li class="active"><a href="#header">Acceuil <span class="sr-only">(current)</span></a></li>
+                              <li><a href="#welcome">A propos</a></li>
+                              <li><a href="#testimonial">Se Connecter</a></li>
+                              <li><a href="{%url 'sinscrire_name'%}">S'inscrire</a></li>
+                              <li><a href="#contact">Contacter</a></li>
+                          </ul>
+                      </div>
+                      <!-- /.navbar-collapse -->
+                  </nav>
+                  <!--End of nav-->
+              </div>
+              <!--End of container-->
+          </div>
+          <!--End of header menu-->
+      </div>
+      <!--end of header area-->
+  </section>
+  <!--End of Hedaer Section-->
+
+  {% block content %} {% endblock %}
+  <main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title light-background">
+      <div class="container d-lg-flex justify-content-between align-items-center">
+        <h1 class="mb-2 mb-lg-0">Agent Profile</h1>
+        <nav class="breadcrumbs">
+          <ol>
+            <li><a href="index.html">Home</a></li>
+            <li class="current">Agent Profile</li>
+          </ol>
+        </nav>
+      </div>
+    </div><!-- End Page Title -->
+
+    <!-- Agent Profile Section -->
+    <section id="agent-profile" class="agent-profile section">
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <!-- Hero Profile Header -->
+        <div class="row align-items-center mb-5">
+          <div class="col-lg-4" data-aos="fade-right" data-aos-delay="150">
+            <div class="agent-photo-wrapper">
+              <img src="assets/img/real-estate/agent-3.webp" alt="Agent Profile" class="img-fluid agent-photo">
+              <div class="agent-badge">
+                <i class="bi bi-star-fill"></i>
+                <span>Top Agent</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-8" data-aos="fade-left" data-aos-delay="200">
+            <div class="agent-info">
+              <h1 class="agent-name">Sarah Martinez</h1>
+              <p class="agent-title">Senior Real Estate Advisor</p>
+              <p class="agent-tagline">"Helping you find not just a house, but your perfect home in the heart of the city."</p>
+
+              <div class="contact-info-hero">
+                <div class="contact-item">
+                  <i class="bi bi-telephone-fill"></i>
+                  <span>+1 (555) 234-5678</span>
+                </div>
+                <div class="contact-item">
+                  <i class="bi bi-envelope-fill"></i>
+                  <span>sarah.martinez@example.com</span>
+                </div>
+                <div class="contact-item">
+                  <i class="bi bi-geo-alt-fill"></i>
+                  <span>Downtown &amp; Suburbs Specialist</span>
+                </div>
+              </div>
+
+              <div class="hero-actions">
+                <a href="#contact" class="btn btn-primary">Contact Me Now</a>
+                <a href="#listings" class="btn btn-outline">View My Listings</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Agent Stats -->
+        <div class="stats-section" data-aos="fade-up" data-aos-delay="100">
+          <div class="row text-center">
+            <div class="col-lg-3 col-md-6 mb-4">
+              <div class="stat-item">
+                <div class="stat-icon">
+                  <i class="bi bi-house-door-fill"></i>
+                </div>
+                <div class="stat-number">180+</div>
+                <div class="stat-label">Homes Sold</div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+              <div class="stat-item">
+                <div class="stat-icon">
+                  <i class="bi bi-calendar-check-fill"></i>
+                </div>
+                <div class="stat-number">8</div>
+                <div class="stat-label">Years Experience</div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+              <div class="stat-item">
+                <div class="stat-icon">
+                  <i class="bi bi-people-fill"></i>
+                </div>
+                <div class="stat-number">200+</div>
+                <div class="stat-label">Happy Clients</div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+              <div class="stat-item">
+                <div class="stat-icon">
+                  <i class="bi bi-trophy-fill"></i>
+                </div>
+                <div class="stat-number">Top 5%</div>
+                <div class="stat-label">Nationwide</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Agent Bio & Specialties -->
+        <div class="row mb-5" data-aos="fade-up" data-aos-delay="150">
+          <div class="col-lg-4 mb-4">
+            <div class="sidebar-info">
+              <div class="contact-card">
+                <h4>Get In Touch</h4>
+
+                <div class="contact-details">
+                  <div class="contact-detail">
+                    <i class="bi bi-telephone"></i>
+                    <div>
+                      <strong>Phone</strong>
+                      <p>+1 (555) 234-5678</p>
+                    </div>
+                  </div>
+                  <div class="contact-detail">
+                    <i class="bi bi-envelope"></i>
+                    <div>
+                      <strong>Email</strong>
+                      <p>sarah.martinez@example.com</p>
+                    </div>
+                  </div>
+                  <div class="contact-detail">
+                    <i class="bi bi-geo-alt"></i>
+                    <div>
+                      <strong>Office</strong>
+                      <p>1234 Main Street<br>Austin, TX 78701</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="social-links">
+                  <a href="#"><i class="bi bi-linkedin"></i></a>
+                  <a href="#"><i class="bi bi-facebook"></i></a>
+                  <a href="#"><i class="bi bi-instagram"></i></a>
+                  <a href="#"><i class="bi bi-whatsapp"></i></a>
+                </div>
+              </div>
+
+              <div class="specialties-card">
+                <h4>Specialties</h4>
+                <div class="specialty-tags">
+                  <span class="specialty-tag">Luxury Homes</span>
+                  <span class="specialty-tag">First-Time Buyers</span>
+                  <span class="specialty-tag">Investment Properties</span>
+                  <span class="specialty-tag">Relocation</span>
+                  <span class="specialty-tag">Bilingual Support</span>
+                </div>
+              </div>
+
+              <div class="certifications-card">
+                <h4>Certifications</h4>
+                <div class="cert-item">
+                  <i class="bi bi-award-fill"></i>
+                  <span>Certified Residential Specialist (CRS)</span>
+                </div>
+                <div class="cert-item">
+                  <i class="bi bi-shield-check"></i>
+                  <span>Graduate REALTOR Institute (GRI)</span>
+                </div>
+                <div class="cert-item">
+                  <i class="bi bi-house-fill"></i>
+                  <span>Luxury Home Marketing Specialist</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-8">
+            <div class="bio-content">
+              <h3>About Sarah</h3>
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+
+              <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+
+              <h4>My Approach</h4>
+              <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>
+
+              <div class="achievements">
+                <h4>Recent Achievements</h4>
+                <ul>
+                  <li>Top 5% of agents nationwide in 2023</li>
+                  <li>Closed over $25M in sales last year</li>
+                  <li>Winner of "Client Choice Award" 2023</li>
+                  <li>Featured in Austin Real Estate Magazine</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact Form -->
+        <div class="contact-form-section" id="contact" data-aos="fade-up" data-aos-delay="100">
+          <div class="row">
+            <div class="col-lg-8 mx-auto">
+              <div class="contact-form-wrapper">
+                <h3 class="text-center mb-4">Schedule a Consultation</h3>
+                <p class="text-center mb-4">Ready to buy, sell, or invest? Let's discuss your real estate goals and find the perfect solution for you.</p>
+
+                <form action="forms/contact.php" method="post" class="php-email-form">
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="name" class="form-label">Full Name</label>
+                      <input type="text" name="name" class="form-control" id="name" required="">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="email" class="form-label">Email Address</label>
+                      <input type="email" name="email" class="form-control" id="email" required="">
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="phone" class="form-label">Phone Number</label>
+                      <input type="tel" name="phone" class="form-control" id="phone">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="service" class="form-label">I'm Interested In</label>
+                      <select name="subject" class="form-control" id="service" required="">
+                        <option value="">Select Service</option>
+                        <option value="buying">Buying a Home</option>
+                        <option value="selling">Selling a Home</option>
+                        <option value="investment">Investment Property</option>
+                        <option value="consultation">Market Consultation</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="message" class="form-label">Message</label>
+                    <textarea name="message" class="form-control" id="message" rows="5" placeholder="Tell me about your real estate needs and preferences..."></textarea>
+                  </div>
+
+                  <div class="loading">Loading</div>
+                  <div class="error-message"></div>
+                  <div class="sent-message">Your message has been sent. Thank you!</div>
+
+                  <div class="text-center">
+                    <button type="submit" class="btn btn-primary btn-lg">Send Message</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section><!-- /Agent Profile Section -->
+
+  </main>
+
+  <!--Start of footer-->
+  <section id="footer">
+      <div class="container">
+          <div class="row text-center">
+              <div class="col-md-6">
+                  <div class="copyright">
+                      <p>@ 2024 - Design By <span><a href="">&#9798;</a></span></p>
+                  </div>
+              </div>
+              <div class="col-md-6">
+                  <div class="designer">
+                      <p>A Design By <a href="#">TCHANK</a></p>
+                  </div>
+              </div>
+          </div>
+          <!--End of row-->
+      </div>
+      <!--End of container-->
+  </section>
+  <!--End of footer-->
+
+
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'js/validate.js' %}"></script>
+  <script src="{% static 'js/aos.js' %}"></script>
+  <script src="{% static 'js/purecounter_vanilla.js' %}"></script>
+  <script src="{% static 'js/swiper-bundle.min.js' %}"></script>
+
+  <!-- Main JS File -->
+  <script src="{% static 'js/mainhome.js' %}"></script>
+
+</body>
+
+</html>

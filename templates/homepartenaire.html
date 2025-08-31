@@ -1,0 +1,643 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extracss %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+    /* Styles spécifiques à la page partenaire */
+    .partner-container {
+        min-height: calc(100vh - 200px);
+        padding-bottom: 40px;
+    }
+
+    .partner-header {
+        background: linear-gradient(to right, #FF0000, #D40000);
+        color: white;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 25px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .navigation-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    .btn-home, .btn-logout {
+        padding: 10px 20px;
+        border-radius: 4px;
+        border: none;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        transition: all 0.3s;
+    }
+
+    .btn-home {
+        background: #f8f9fa;
+        color: #333;
+        border: 1px solid #dee2e6;
+    }
+
+    .btn-home:hover {
+        background: #e9ecef;
+    }
+
+    .btn-logout {
+        background: #333;
+        color: white;
+    }
+
+    .btn-logout:hover {
+        background: #555;
+    }
+
+    .notification-badge {
+        position: relative;
+        margin-right: 15px;
+    }
+
+    .badge-count {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background-color: #FF0000;
+        color: white;
+        border-radius: 50%;
+        width: 22px;
+        height: 22px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    .view-toggle {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 20px;
+    }
+
+    .view-toggle-btn {
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        padding: 8px 15px;
+        margin-left: 5px;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .view-toggle-btn.active {
+        background: #FF0000;
+        color: white;
+        border-color: #FF0000;
+    }
+
+    .view-toggle-btn:first-child {
+        border-radius: 4px 0 0 4px;
+    }
+
+    .view-toggle-btn:last-child {
+        border-radius: 0 4px 4px 0;
+    }
+
+    /* Styles pour l'affichage en cartes */
+    .card-view {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+    }
+
+    .candidate-card {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        overflow: hidden;
+        transition: transform 0.3s;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .candidate-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+    }
+
+    .card-img-container {
+        height: 180px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .card-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s;
+    }
+
+    .candidate-card:hover .card-img {
+        transform: scale(1.05);
+    }
+
+    .card-status {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    .card-header {
+        background: #FF0000;
+        color: white;
+        padding: 15px;
+    }
+
+    .card-body {
+        padding: 15px;
+        flex-grow: 1;
+    }
+
+    .card-footer {
+        padding: 15px;
+        background: #f8f9fa;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    /* Styles pour l'affichage en tableau */
+    .tableView {
+        display: none;
+    }
+
+    .candidate-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .candidate-table th {
+        background: #FF0000;
+        color: white;
+        padding: 12px 15px;
+        text-align: left;
+    }
+
+    .candidate-table td {
+        padding: 12px 15px;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .candidate-table tr:last-child td {
+        border-bottom: none;
+    }
+
+    .candidate-table tr:hover {
+        background-color: #f8f9fa;
+    }
+
+    /* Boutons d'action */
+    .btn-action {
+        padding: 6px 12px;
+        border-radius: 4px;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-size: 14px;
+    }
+
+    .btn-view {
+        background: #17a2b8;
+        color: white;
+    }
+
+    .btn-view:hover {
+        background: #138496;
+    }
+
+    .btn-favorite {
+        background: #ffc107;
+        color: #333;
+    }
+
+    .btn-favorite:hover {
+        background: #e0a800;
+    }
+
+    .btn-edit {
+        background: #28a745;
+        color: white;
+    }
+
+    .btn-edit:hover {
+        background: #218838;
+    }
+
+    .btn-delete {
+        background: #dc3545;
+        color: white;
+    }
+
+    .btn-delete:hover {
+        background: #c82333;
+    }
+
+    .btn-add {
+        background: #FF0000;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 4px;
+        border: none;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .btn-add:hover {
+        background: #D40000;
+    }
+
+    /* Modal de notification */
+    .notification-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .notification-content {
+        background: white;
+        width: 90%;
+        max-width: 600px;
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+
+    .notification-header {
+        background: #FF0000;
+        color: white;
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 8px 8px 0 0;
+    }
+
+    .notification-body {
+        padding: 20px;
+    }
+
+    .notification-item {
+        padding: 15px;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .notification-item:last-child {
+        border-bottom: none;
+    }
+
+    .notification-item.unread {
+        background: #f8f9fa;
+        border-left: 4px solid #FF0000;
+    }
+
+    .notification-date {
+        font-size: 12px;
+        color: #6c757d;
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+        .card-view {
+            grid-template-columns: 1fr;
+        }
+
+        .view-toggle {
+            justify-content: center;
+        }
+
+        .candidate-table {
+            display: block;
+            overflow-x: auto;
+        }
+
+        .partner-header {
+            text-align: center;
+        }
+
+        .header-actions {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .navigation-buttons {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .navigation-buttons div {
+            display: flex;
+            justify-content: center;
+        }
+    }
+
+    .btn-favorite {
+        background: none;
+        border: 2px solid #ccc;
+        padding: 8px 15px;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .btn-favorite:hover {
+        border-color: #ff4757;
+        color: #ff4757;
+    }
+
+    .btn-favorite.active {
+        background-color: #ff4757;
+        border-color: #ff4757;
+        color: white;
+    }
+
+    .btn-favorite i {
+        margin-right: 5px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4 partner-container">
+    <!-- Boutons de navigation -->
+    <div class="navigation-buttons">
+        <div>
+            <button class="btn-home" onclick="window.location.href='/'">
+                <i class="fa fa-home"></i> Retour à l'accueil
+            </button>
+        </div>
+        <div>
+            <button class="btn-logout" onclick="window.location.href={% url 'logout' %}">
+                <i class="fa fa-sign-out"></i> Déconnexion
+            </button>
+        </div>
+    </div>
+
+    <!-- En-tête de la page partenaire -->
+    <div class="partner-header">
+        <div class="d-flex justify-content-between align-items-center">
+            <h2 class="mb-0">Centre: {{ partenaireconnecte.nom_du_centre }}</h2>
+            <h5 class="mb-0">Partenaire: {{ partenaireconnecte.nom }}</h5>
+            <div class="d-flex align-items-center header-actions">
+                <div class="notification-badge">
+                    <button class="btn btn-light" id="notificationBtn">
+                        <i class="fa fa-bell" style="color: black;"></i>
+                        <span class="badge-count"> <strong>{% if sesnotifications %} {{ sesnotifications|length }} {% endif %}</strong></span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <button class="btn-add" onclick="window.location.href='{% url 'ajoutcandidat_name' %}'">
+        <i class="fa fa-plus"></i> Nouveau Candidat
+    </button>
+
+    <!-- Contrôle d'affichage (cartes/tableau) -->
+    <div class="view-toggle">
+        <div class="btn-group" role="group">
+            <button type="button" class="view-toggle-btn active" id="cardViewBtn">
+                <i class="fa fa-th"></i> Cartes
+            </button>
+            <button type="button" class="view-toggle-btn" id="tableViewBtn">
+                <i class="fa fa-list"></i> Tableau
+            </button>
+        </div>
+    </div>
+
+    <!-- Affichage en cartes -->
+    <div id="cardView" class="card-view">
+        <!-- Cartes candidats -->
+    {% for candidat in listCandidat %}
+        <div class="candidate-card">
+            <div class="card-img-container">
+                <img src="{{ candidat.photo_portrait.url }}" alt="photo" class="card-img">
+                <span class="card-status bg-success">
+                     {% if candidat.statut in "V,Validé" %}
+                    <i class="fa fa-check-circle" style="color: green;"></i>
+                {% elif candidat.statut in "NV,Non Validé" %}
+                    <i class="fa fa-times-circle" style="color: red;"></i>
+                {% elif candidat.statut in "A,Approuvé" %}
+                    <i class="fa fa-certificate" style="color: green;"></i>
+                {% else %}
+                    <i class="fa fa-hourglass-half" style="color: orange;"></i>
+                {% endif %}
+                {{ candidat.statut }}</span>
+            </div>
+            <div class="card-header">
+                <h5 class="mb-0">{{ candidat.nom }}</h5>
+                <p class="mb-0">{{ candidat.prenom }}</p>
+            </div>
+            <div class="card-body">
+                <p><i class="fa fa-money"></i> <strong>budget: </strong> {{ candidat.budget }} Fcfa</p>
+                <p><i class="fa fa-phone"></i> <strong>Téléphone:</strong> {{ candidat.numero_telephone }}</p>
+                <p><i class="fa fa-map-marker"></i> <strong>Ville: </strong> {{ candidat.ville_residence }}</p>
+                <p><i class="fa fa-globe"></i> <strong>Langue Usuelle: </strong>{{ candidat.langue_usuelle }}</p>
+            </div>
+            <div class="card-footer">
+                <button class="btn-action btn-view" onclick="window.location.href= '{% url 'detailcandidat_name' candidat.id %}'"><i class="fa fa-eye"></i> Détails</button>
+                <button class="btn-action btn-favorite {% if candidat.favoris %}active{% endif %}"
+                        data-candidat-id="{{ candidat.id }}">
+                    <i class="fa {% if candidat.favoris %}fa fa-heart{% else %}fa fa-heart-o{% endif %}"></i>
+                </button>
+<!--                <span class="favoris-text">-->
+<!--                    {% if candidat.favoris %}Retirer des favoris{% else %}Ajouter aux favoris{% endif %} -->
+<!--                </span>-->
+
+                <!-- Ajouter le token CSRF caché -->
+               <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+                <script>
+                    document.querySelectorAll('.btn-favorite').forEach(button => {
+                        button.addEventListener('click', function () {
+                            const candidatId = this.getAttribute('data-candidat-id');
+                            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+                            fetch(`/candidat/${candidatId}/change-favoris/`, {
+                                method: 'POST',
+                                headers: {
+                                    'X-CSRFToken': csrfToken,
+                                    'X-Requested-With': 'XMLHttpRequest', // très utile pour distinguer AJAX
+                                    'Content-Type': 'application/json',
+                                },
+                            })
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error("Erreur HTTP " + response.status);
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                if (data.status === 'success') {
+                                    // Mettre à jour le bouton sans recharger la page
+                                    this.classList.toggle('active');
+                                    const icon = this.querySelector('i');
+                                    const text = this.nextElementSibling;
+
+                                    if (data.favoris) {
+                                        icon.classList.remove('far');
+                                        icon.classList.add('fas');
+                                        text.textContent = "Retirer des favoris";
+                                    } else {
+                                        icon.classList.remove('fas');
+                                        icon.classList.add('far');
+                                        text.textContent = "Ajouter aux favoris";
+                                    }
+                                } else {
+                                    alert("Erreur: " + data.message);
+                                }
+                            })
+                            .catch(error => {
+                                alert("Erreur lors de la mise à jour des favoris: " + error);
+                            });
+                        });
+                    });
+                </script>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+
+    <!-- Affichage en tableau (caché par défaut) -->
+    <div id="tableView" class="tableView">
+        <table class="candidate-table">
+            <thead>
+                <tr>
+                    <th>Photo</th>
+                    <th>Nom</th>
+                    <th>ville</th>
+                    <th>budget (Fcfa)</th>
+                    <th>Téléphone</th>
+                    <th>Statut</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for candidat in listCandidat %}
+                <tr>
+                    <td><img src="{{ candidat.photo_portrait.url }}" alt="photo" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;"></td>
+                    <td>{{ candidat.nom }}</td>
+                    <td>{{ candidat.ville_residence }}</td>
+                    <td>{{ candidat.budget }}</td>
+                    <td>{{ candidat.numero_telephone }}</td>
+                    <td><span class="badge bg-success">{{ candidat.statut }}</span></td>
+                    <td>
+                        <button class="btn-action btn-view" onclick="window.location.href= '{% url 'detailcandidat_name' candidat.id %}'" title="Voir détails"><i class="fa fa-eye"></i></button>
+                        <button class="btn-action btn-favorite" title="Ajouter aux favoris"><i class="{% if candidat.favoris %}fa fa-heart{% else %}fa fa-heart-o{% endif %}"></i></button>
+                        <button class="btn-action btn-edit" onclick="window.location.href= '{% url 'detailcandidat_name' candidat.id %}'" title="Modifier"><i class="fa fa-edit"></i></button>
+                        <button class="btn-action btn-delete" title="Supprimer"><i class="fa fa-trash"></i></button>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal de notification -->
+<div class="notification-modal" id="notificationModal">
+    <div class="notification-content">
+        <div class="notification-header">
+            <h4 class="mb-0">Notifications</h4>
+            <button type="button" class="btn-close btn-close-white" id="closeNotification"></button>
+        </div>
+        {% for notification in sesnotifications %}
+        <div class="notification-body">
+            <div class="notification-item unread">
+                <h5>Nouveau message</h5>
+                <p>{{ notification.libelle }}</p>
+                <div class="notification-date">{{ notification.date }}</div>
+            </div>
+
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extrajs %}
+<script>
+    // Gestion du changement de vue (cartes/tableau)
+    document.addEventListener('DOMContentLoaded', function() {
+        const cardViewBtn = document.getElementById('cardViewBtn');
+        const tableViewBtn = document.getElementById('tableViewBtn');
+        const cardView = document.getElementById('cardView');
+        const tableView = document.getElementById('tableView');
+
+        cardViewBtn.addEventListener('click', function() {
+            cardView.style.display = 'grid';
+            tableView.style.display = 'none';
+            cardViewBtn.classList.add('active');
+            tableViewBtn.classList.remove('active');
+        });
+
+        tableViewBtn.addEventListener('click', function() {
+            cardView.style.display = 'none';
+            tableView.style.display = 'block';
+            tableViewBtn.classList.add('active');
+            cardViewBtn.classList.remove('active');
+        });
+
+        // Gestion des notifications
+        const notificationBtn = document.getElementById('notificationBtn');
+        const notificationModal = document.getElementById('notificationModal');
+        const closeNotification = document.getElementById('closeNotification');
+
+        notificationBtn.addEventListener('click', function() {
+            notificationModal.style.display = 'flex';
+        });
+
+        closeNotification.addEventListener('click', function() {
+            notificationModal.style.display = 'none';
+        });
+
+        notificationModal.addEventListener('click', function(e) {
+            if (e.target === notificationModal) {
+                notificationModal.style.display = 'none';
+            }
+        });
+
+        // Gestion des boutons favoris
+        const favoriteButtons = document.querySelectorAll('.btn-favorite');
+        favoriteButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                this.classList.toggle('active');
+                if (this.classList.contains('active')) {
+                    this.innerHTML = '<i class="fa fa-heart"></i>';
+                } else {
+                    this.innerHTML = '<i class="fa fa-heart-o"></i>';
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

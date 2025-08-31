@@ -1,0 +1,441 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extracss %}
+  <style>
+    /* Styles pour la page de confirmation */
+    .confirmation-container {
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      padding: 40px 20px;
+    }
+
+    .confirmation-card {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    .confirmation-header {
+      padding: 30px;
+      color: white;
+    }
+
+    .status-validated {
+      background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    }
+
+    .status-pending {
+      background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+    }
+
+    .status-approved {
+      background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+    }
+
+    .status-rejected {
+      background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    }
+
+    .confirmation-icon {
+      font-size: 4rem;
+      margin-bottom: 15px;
+    }
+
+    .icon-bounce {
+      animation: bounce 1s ease infinite;
+    }
+
+    .icon-pulse {
+      animation: pulse 2s ease infinite;
+    }
+
+    .icon-rotate {
+      animation: rotate 3s linear infinite;
+    }
+
+    .confirmation-body {
+      padding: 40px 30px;
+    }
+
+    .confirmation-title {
+      color: #2c3e50;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+    }
+
+    .confirmation-message {
+      color: #6c757d;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+
+    .confirmation-image {
+      width: 100%;
+      max-width: 300px;
+      height: auto;
+      border-radius: 10px;
+      margin: 20px auto;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .image-validated {
+      border: 4px solid #28a745;
+    }
+
+    .image-pending {
+      border: 4px solid #ffc107;
+    }
+
+    .image-approved {
+      border: 4px solid #17a2b8;
+    }
+
+    .image-rejected {
+      border: 4px solid #dc3545;
+    }
+
+    .btn-return {
+      display: inline-block;
+      color: white;
+      padding: 15px 35px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+
+    .btn-validated {
+      background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+      box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+    }
+
+    .btn-pending {
+      background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+      box-shadow: 0 5px 15px rgba(255, 193, 7, 0.3);
+    }
+
+    .btn-approved {
+      background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+      box-shadow: 0 5px 15px rgba(23, 162, 184, 0.3);
+    }
+
+    .btn-rejected {
+      background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+      box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
+    }
+
+    .btn-return:hover {
+      transform: translateY(-3px);
+      color: white;
+    }
+
+    .btn-validated:hover {
+      box-shadow: 0 8px 20px rgba(40, 167, 69, 0.4);
+    }
+
+    .btn-pending:hover {
+      box-shadow: 0 8px 20px rgba(255, 193, 7, 0.4);
+    }
+
+    .btn-approved:hover {
+      box-shadow: 0 8px 20px rgba(23, 162, 184, 0.4);
+    }
+
+    .btn-rejected:hover {
+      box-shadow: 0 8px 20px rgba(220, 53, 69, 0.4);
+    }
+
+    .confirmation-footer {
+      padding: 20px;
+      background: #f8f9fa;
+      border-top: 1px solid #e9ecef;
+      color: #6c757d;
+      font-size: 0.9rem;
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+      }
+      40% {
+        transform: translateY(-20px);
+      }
+      60% {
+        transform: translateY(-10px);
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.1);
+      }
+    }
+
+    @keyframes rotate {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 576px) {
+      .confirmation-card {
+        margin: 20px;
+      }
+
+      .confirmation-title {
+        font-size: 1.7rem;
+      }
+
+      .confirmation-message {
+        font-size: 1rem;
+      }
+
+      .confirmation-icon {
+        font-size: 3rem;
+      }
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+{% if candidat.statut == "Validé" and candidat.confirmation %}
+<!-- Cas: Profil Validé -->
+<div class="confirmation-container">
+  <div class="confirmation-card">
+    <div class="confirmation-header status-validated">
+      <div class="confirmation-icon icon-bounce">
+        <i class="fa fa-check-circle"></i>
+      </div>
+      <h2>Inscription Réussie !</h2>
+    </div>
+
+    <div class="confirmation-body">
+      <h3 class="confirmation-title">Félicitations !</h3>
+      <p class="confirmation-message">
+        Votre inscription a été effectuée avec succès. Contactez-nous afin de connaître les mesures à prendre.
+      </p>
+
+      <img src="{% static 'img/imgwin.jpg' %}" alt="Inscription réussie" class="confirmation-image image-validated">
+      <img src="{{ candidat.confirmation.url }}" alt="Inscription réussie" class="confirmation-image image-validated">
+
+      <p class="confirmation-message">
+        Contactez-nous sur WhatsApp pour connaître les modalités de paiement.
+      </p>
+
+      <a href="https://wa.me/+237653673459" class="btn-return btn-validated">
+        <i class="fa fa-whatsapp"></i>
+        WhatsApp
+      </a>
+      <a href="{% url 'index' %}" class="btn-return btn-validated">
+        Retour à l'accueil
+      </a>
+    </div>
+
+    <div class="confirmation-footer">
+      <p>Merci de nous avoir fait confiance ! L'équipe de support est à votre disposition pour toute question. Nous vous serions reconnaissants de nous recommander auprès de vos proches et connaissances.</p>
+    </div>
+  </div>
+</div>
+
+{% elif candidat.statut == "En Attente" %}
+<!-- Cas: En Attente -->
+<div class="confirmation-container">
+  <div class="confirmation-card">
+    <div class="confirmation-header status-pending">
+      <div class="confirmation-icon icon-rotate">
+        <i class="fa fa-hourglass-half"></i>
+      </div>
+      <h2>En Attente D'axamen</h2>
+    </div>
+
+    <div class="confirmation-body">
+      <h3 class="confirmation-title">Vérification en cours</h3>
+      <p class="confirmation-message">
+        Nous examinons attentivement votre dossier.
+      </p>
+
+      <div class="confirmation-image image-pending">
+        <i class="fa fa-clock-o" style="font-size: 80px; color: #ffc107; padding: 40px;"></i>
+      </div>
+
+      <p class="confirmation-message">
+        Si votre demande n’est pas traitée sous 3 heures, contactez-nous..
+      </p>
+
+      <a href="{% url 'homecandidat_name' %}" class="btn-return btn-pending">
+        Retour
+      </a>
+    </div>
+
+    <div class="confirmation-footer">
+      <p>En cas d’erreur, vous serez notifié des éléments à corriger ; sinon, votre profil passera directement au statut APPROUVÉ.</p>
+    </div>
+  </div>
+</div>
+
+{% elif candidat.statut == "Approuvé" %}
+<!-- Cas: Approuvé -->
+<div class="confirmation-container">
+  <div class="confirmation-card">
+    <div class="confirmation-header status-approved">
+      <div class="confirmation-icon icon-pulse">
+        <i class="fa fa-thumbs-up"></i>
+      </div>
+      <h2>Profil Approuvé</h2>
+    </div>
+
+    <div class="confirmation-body">
+      <h3 class="confirmation-title">Merci!</h3>
+      <p class="confirmation-message">
+        Votre profil a été approuvé : vos informations sont exactes et ne présentent aucune erreur.
+      </p>
+
+      <div class="confirmation-image image-approved">
+        <i class="fa fa-user-circle" style="font-size: 80px; color: #17a2b8; padding: 40px;"></i>
+      </div>
+
+      <p class="confirmation-message">
+        Votre inscription est en cours de validation. Nous vous invitons à patienter..
+      </p>
+
+      <a href="{% url 'homecandidat_name' %}" class="btn-return btn-approved">
+        Retour
+      </a>
+    </div>
+
+    <div class="confirmation-footer">
+      <p>Merci de nous avoir fait confiance ! L'équipe de support est à votre disposition pour toute question. Nous vous serions reconnaissants de nous recommander auprès de vos proches et connaissances.</p>
+    </div>
+  </div>
+</div>
+
+{% elif candidat.statut == "Non Validé" %}
+<!-- Cas: Non validé -->
+<div class="confirmation-container">
+  <div class="confirmation-card">
+    <div class="confirmation-header status-rejected">
+      <div class="confirmation-icon">
+        <i class="fa fa-times"></i>
+      </div>
+      <h2>Problème de Validation</h2>
+    </div>
+
+    <div class="confirmation-body">
+      <h3 class="confirmation-title">Validation échouée</h3>
+      <p class="confirmation-message">
+        Votre inscription n'a pas pu être validée. Veuillez contacter notre équipe pour un accompagnement.
+      </p>
+
+      <div class="confirmation-image image-rejected">
+        <i class="fa fa-times-circle" style="font-size: 80px; color: #dc3545; padding: 40px;"></i>
+      </div>
+
+      <p class="confirmation-message">
+        Vous pouvez patienter jusqu’aux prochaines sessions ou postuler dans une autre ville. Contactez-nous pour obtenir davantage d’informations.
+      </p>
+
+      <div>
+        <a href="https://wa.me/+237653673459" class="btn-return btn-rejected">
+          <i class="fa fa-whatsapp"></i>
+          Nous Contacter
+        </a>
+        <a href="{% url 'homecandidat_name' %}" class="btn-return" style="background: #6c757d; box-shadow: 0 5px 15px rgba(108, 117, 125, 0.3);">
+          Retour
+        </a>
+      </div>
+    </div>
+
+    <div class="confirmation-footer">
+      <p>Contactez-nous afin de bénéficier d’une meilleure orientation..</p>
+    </div>
+  </div>
+</div>
+
+{% endif %}
+{% endblock %}
+
+{% block extrajs %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Ajouter une classe d'animation après le chargement de la page
+      setTimeout(function() {
+        const card = document.querySelector('.confirmation-card');
+        if (card) {
+          card.classList.add('animated');
+        }
+      }, 100);
+
+      // Animation de confetti seulement pour le statut "Validé"
+      {% if candidat.statut == "Validé" and candidat.confirmation %}
+      function createConfetti() {
+        const colors = ['#28a745', '#ffffff', '#20c997', '#155724'];
+        const confettiCount = 50;
+
+        for (let i = 0; i < confettiCount; i++) {
+          const confetti = document.createElement('div');
+          confetti.style.position = 'fixed';
+          confetti.style.width = '10px';
+          confetti.style.height = '10px';
+          confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+          confetti.style.borderRadius = '50%';
+          confetti.style.top = '0';
+          confetti.style.left = Math.random() * 100 + 'vw';
+          confetti.style.opacity = '0';
+          confetti.style.zIndex = '9999';
+          confetti.style.pointerEvents = 'none';
+
+          document.body.appendChild(confetti);
+
+          // Animation
+          const animation = confetti.animate([
+            { opacity: 1, transform: 'translateY(0) rotate(0deg)' },
+            { opacity: 0, transform: 'translateY(100vh) rotate(360deg)' }
+          ], {
+            duration: Math.random() * 3000 + 2000,
+            easing: 'cubic-bezier(0.1, 0.8, 0.3, 1)'
+          });
+
+          animation.onfinish = () => confetti.remove();
+        }
+      }
+
+      // Lancer les confettis au chargement de la page
+      createConfetti();
+      {% endif %}
+    });
+  </script>
+{% endblock %}

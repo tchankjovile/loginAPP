@@ -4,7 +4,144 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link href="{% static 'img/logoinstitut.png' %}" rel="icon">
     <title>{% block title %}Inscription{% endblock %}</title>
+	    <style>
+        /* Styles pour les messages d'erreur */
+        .alert-messages {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            max-width: 400px;
+        }
+
+        .alert {
+            padding: 16px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: flex-start;
+            animation: slideIn 0.3s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .alert::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+        }
+
+        .alert-error {
+            background-color: #ffebee;
+            color: #c62828;
+            border-left: 5px solid #c62828;
+        }
+
+        .alert-success {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border-left: 5px solid #2e7d32;
+        }
+
+        .alert-warning {
+            background-color: #fff8e1;
+            color: #f57c00;
+            border-left: 5px solid #f57c00;
+        }
+
+        .alert-info {
+            background-color: #e3f2fd;
+            color: #1565c0;
+            border-left: 5px solid #1565c0;
+        }
+
+        .alert-icon {
+            margin-right: 12px;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .alert-content {
+            flex-grow: 1;
+        }
+
+        .alert-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .alert-close {
+            background: none;
+            border: none;
+            color: inherit;
+            cursor: pointer;
+            margin-left: 10px;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+            flex-shrink: 0;
+        }
+
+        .alert-close:hover {
+            opacity: 1;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        .alert.hiding {
+            animation: slideOut 0.3s ease-in forwards;
+        }
+
+        /* Styles pour les erreurs de formulaire */
+        .field-errors {
+            color: #c62828;
+            font-size: 14px;
+            margin-top: 5px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .field-errors .material-icons {
+            font-size: 16px;
+            margin-right: 5px;
+            flex-shrink: 0;
+        }
+
+        .error-list {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .form-group.has-error .form-control {
+            border-color: #c62828;
+            box-shadow: 0 0 0 1px #c62828;
+        }
+    </style>
   <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons">
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
@@ -12,7 +149,131 @@
     <link rel="stylesheet" href="{% static 'css/registrationstyle.css' %}">
 </head>
 <body>
+ <div class="image-container set-full-height" style="background-image: url('https://plus.unsplash.com/premium_photo-1723478702093-0f3470cfaaef?q=80&w=840&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')">
+	    <!--   Creative Tim Branding   -->
+	    <a href="{%url 'index'%}" target="_blank">
+	         <div class="logo-container">
+	            <div class="logo">
+	                <img src="{% static 'img/logo.png' %}">
+	            </div>
+	            <div class="brand">
+	                ACCEUIL
+	            </div>
+	        </div>
+	    </a>
+	 <!-- Container pour les messages d'erreurs -->
+    <div class="alert-messages">
+
+		{% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags|default:'error' }}" id="alert-{{ forloop.counter }}">
+                    <span class="alert-icon material-icons">
+                        {% if message.tags == 'success' %}check_circle{% endif %}
+                        {% if message.tags == 'warning' %}warning{% endif %}
+                        {% if message.tags == 'info' %}info{% endif %}
+                        {% if message.tags == 'error' or not message.tags %}error{% endif %}
+                    </span>
+                    <div class="alert-content">
+                        <div class="alert-title">
+                            {% if message.tags == 'success' %}Succès{% endif %}
+                            {% if message.tags == 'warning' %}Attention{% endif %}
+                            {% if message.tags == 'info' %}Information{% endif %}
+                            {% if message.tags == 'error' or not message.tags %}Erreur{% endif %}
+                        </div>
+                        <div>{{ message }}</div>
+                    </div>
+                    <button class="alert-close" onclick="closeAlert('alert-{{ forloop.counter }}')">
+                        <span class="material-icons">close</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+		{% if form.errors %}
+            <div class="alert alert-error" id="form-errors">
+                <span class="alert-icon material-icons">error</span>
+                <div class="alert-content">
+                    <div class="alert-title">Erreurs de formulaire</div>
+                    <div>
+                        {% for field, errors in form.errors.items %}
+                            {% for error in errors %}
+                                <div class="field-errors">
+                                    <span class="material-icons">chevron_right</span>
+                                    <span>{{ error }}</span>
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <button class="alert-close" onclick="closeAlert('form-errors')">
+                    <span class="material-icons">close</span>
+                </button>
+            </div>
+        {% endif %}
+    </div>
+
+
+
+		<!--  Made With Material Kit  -->
+		<a href="#" class="made-with-mk" target="_blank">
+			<div class="brand">MT</div>
+			<div class="made-with">Made by <strong>TKHANK</strong></div>
+		</a>
+
+	    <!--   Big container   -->
+	    <div class="container">
+	        <div class="row">
+		        <div class="col-sm-8 col-sm-offset-2">
+		            <!-- Wizard container -->
+		            <div class="wizard-container">
+		                <div class="card wizard-card" data-color="red" id="wizard">
+
+		                <!--        You can switch " data-color="blue" "  with one of the next bright colors: "green", "orange", "red", "purple"             -->
+
+								{% block formheader %} {%endblock%}
+
+
+<div class="tab-content">
+
     {% block content %}{% endblock %}
+
+
+
+					</div>
+                  	<div class="wizard-footer">
+	                            	<div class="pull-right">
+										{% block bouttonnext %} {% endblock %}
+	                                    <input type='submit' class='btn btn-finish btn-fill btn-danger btn-wd' name='finish' value='valider' />
+	                                </div>
+	                                <div class="pull-left">
+										{% block bouttonprevious %} {% endblock %}
+										<div class="footer-checkbox">
+											<div class="col-sm-12">
+											  <div class="checkbox">
+												  <label>
+													  <input type="checkbox" name="optionsCheckboxes">
+												  </label>
+												  Autoriser nos notifications
+											  </div>
+										  </div>
+										</div>
+	                                </div>
+	                                <div class="clearfix"></div>
+	                        	</div>
+		                    </form>
+		                </div>
+		            </div> <!-- wizard container -->
+		        </div>
+	    	</div> <!-- row -->
+		</div> <!--  big container -->
+
+	    <div class="footer">
+	        <div class="container text-center">
+	             Made By <i class="fa fa-heart heart"></i> by <a href="#" target="_blank">TCHANK</a>. INSTITU TCF TEF EXPRESS<a href="http://www.creative-tim.com/product/material-bootstrap-wizard" target="_blank">here.</a>
+	        </div>
+	    </div>
+	</div>
+
 
     <!--Start of footer-->
         <section id="footer">
@@ -34,6 +295,8 @@
             <!--End of container-->
         </section>
         <!--End of footer-->
+
+
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js'></script>
 <script src="{% static 'js/registrationjs.js' %}"></script>

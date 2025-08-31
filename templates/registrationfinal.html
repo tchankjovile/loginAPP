@@ -1,0 +1,114 @@
+{% extends 'base_registration.html' %}
+{% load static %}
+
+
+{% block formheader %}
+<form action="" method="POST" enctype="multipart/form-data">
+								{% csrf_token %}
+		                    	<div class="wizard-header">
+		                        	<h3 class="wizard-title">
+		                        		S'incrire
+		                        	</h3>
+									<h5>Remplissez correctement vos informations</h5>
+		                    	</div>
+								<div class="wizard-navigation">
+									<ul>
+										<li><a href="#captain" data-toggle="tab">Votre profile</a></li>
+			                            <li><a href="#details" data-toggle="tab">Compte</a></li>
+			                            <li><a href="#description" data-toggle="tab">Autres Details</a></li>
+			                        </ul>
+								</div>
+
+    {% endblock %}
+
+{% block content %}
+
+
+                                <div class="tab-pane" id="description">
+                                    <div class="row">
+                                        <h4 class="info-text">Informations additionnelles</h4>
+                                        {% if user_type == "candidat" %}
+                                        <!-- Champs pour candidat -->
+                                        <div class="candidat-fields">
+                                            <div class="col-sm-6">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <i class="material-icons">person</i>
+                                                    </span>
+                                                    <div class="form-group label-floating">
+                                                        <label class="control-label">Nom</label>
+                                                        <input name="nom_candidat" type="text" class="form-control" required>
+                                                    </div>
+                                                </div>
+
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <i class="material-icons">person</i>
+                                                    </span>
+                                                    <div class="form-group label-floating">
+                                                        <label class="control-label">Prénom</label>
+                                                        <input name="prenom" type="text" class="form-control" required>
+                                                    </div>
+                                                </div>
+
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <i class="material-icons">location_city</i>
+                                                    </span>
+                                                    <div class="form-group label-floating">
+                                                        <label class="control-label">Ville de résidence</label>
+                                                        <input name="ville_residence" type="text" class="form-control" required>
+                                                    </div>
+                                                </div>
+
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <i class="material-icons">language</i>
+                                                    </span>
+                                                    <div class="form-group label-floating">
+                                                        <label class="control-label">Langue usuelle</label>
+                                                        <input name="langue_usuelle" type="text" class="form-control" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label>Photo portrait</label>
+                                                    <input name="photo_portrait" type="file" class="form-control" accept="image/*" required>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label>Pièce d'identité (recto)</label>
+                                                    <input name="piece_identite_recto" type="file" class="form-control" accept="image/*">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label>Pièce d'identité (verso)</label>
+                                                    <input name="piece_identite_verso" type="file" class="form-control" accept="image/*" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endif %}
+
+                                        {% if user_type == "partenaire" %}
+                                        <!-- Champs pour partenaire -->
+                                        <div class="partenaire-fields">
+                                            <div class="col-sm-6 col-sm-offset-1">
+                                                <div class="form-group">
+                                                    <label>Nom du centre</label>
+                                                    <input name="nom_du_centre" type="text" class="form-control" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+
+
+{% endblock %}
+
+{% block bouttonprevious %}
+    <a href= "{% url 'index' %}"><input type='button' class='btn btn-previous btn-fill btn-default btn-wd' name='previous' value='revenir' /></a>
+{% endblock %}

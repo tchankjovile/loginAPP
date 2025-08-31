@@ -1,0 +1,572 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extracss %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+    /* Styles spécifiques à la page de détail candidat */
+    .candidate-detail-container {
+        min-height: calc(100vh - 200px);
+        padding: 30px 0;
+        background-color: #f8f9fa;
+    }
+
+    .detail-header {
+        background: linear-gradient(to right, #FF0000, #D40000);
+        color: white;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 25px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .navigation-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    .btn-home, .btn-back, .btn-logout {
+        padding: 10px 20px;
+        border-radius: 4px;
+        border: none;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        transition: all 0.3s;
+    }
+
+    .btn-home {
+        background: #f8f9fa;
+        color: #333;
+        border: 1px solid #dee2e6;
+    }
+
+    .btn-home:hover {
+        background: #e9ecef;
+    }
+
+    .btn-back {
+        background: #6c757d;
+        color: white;
+    }
+
+    .btn-back:hover {
+        background: #5a6268;
+    }
+
+    .btn-logout {
+        background: #333;
+        color: white;
+    }
+
+    .btn-logout:hover {
+        background: #555;
+    }
+
+    .candidate-detail-card {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        overflow: hidden;
+        margin-bottom: 30px;
+    }
+
+    .candidate-header {
+        background: #FF0000;
+        color: white;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .candidate-status {
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: bold;
+        background: rgba(255,255,255,0.2);
+    }
+
+    .candidate-body {
+        padding: 30px;
+    }
+
+    .candidate-photo {
+        width: 200px;
+        height: 200px;
+        border-radius: 8px;
+        object-fit: cover;
+        border: 3px solid #f8f9fa;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .document-image {
+        width: 100%;
+        border-radius: 6px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        transition: transform 0.3s;
+    }
+
+    .document-image:hover {
+        transform: scale(1.05);
+    }
+
+    .info-group {
+        margin-bottom: 25px;
+    }
+
+    .info-label {
+        font-weight: 600;
+        color: #555;
+        margin-bottom: 5px;
+        font-size: 14px;
+    }
+
+    .info-value {
+        font-size: 16px;
+        color: #333;
+        padding: 8px 12px;
+        background: #f8f9fa;
+        border-radius: 4px;
+        border: 1px solid #e9ecef;
+    }
+
+    .edit-toggle {
+        background: #FF0000;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 6px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .edit-toggle:hover {
+        background: #D40000;
+        transform: translateY(-2px);
+    }
+
+    .form-control {
+        border-radius: 6px;
+        padding: 8px 12px;
+        border: 1px solid #ced4da;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    .form-control:focus {
+        border-color: #FF0000;
+        box-shadow: 0 0 0 0.2rem rgba(255, 0, 0, 0.25);
+    }
+
+    .btn-save {
+        background: #28a745;
+        color: white;
+        border: none;
+        padding: 10px 25px;
+        border-radius: 6px;
+        font-weight: bold;
+        transition: all 0.3s;
+    }
+
+    .btn-save:hover {
+        background: #218838;
+        transform: translateY(-2px);
+    }
+
+    .btn-cancel {
+        background: #6c757d;
+        color: white;
+        border: none;
+        padding: 10px 25px;
+        border-radius: 6px;
+        font-weight: bold;
+        transition: all 0.3s;
+        margin-right: 10px;
+    }
+
+    .btn-cancel:hover {
+        background: #5a6268;
+    }
+
+    .file-upload-container {
+        border: 2px dashed #dee2e6;
+        border-radius: 8px;
+        padding: 15px;
+        text-align: center;
+        margin-top: 10px;
+        transition: border-color 0.3s;
+        background: #f8f9fa;
+    }
+
+    .file-upload-container:hover {
+        border-color: #FF0000;
+    }
+
+    .file-upload-label {
+        cursor: pointer;
+        display: block;
+    }
+
+    .file-upload-icon {
+        font-size: 24px;
+        color: #6c757d;
+        margin-bottom: 8px;
+    }
+
+    .document-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
+    }
+
+    .btn-view {
+        background: #17a2b8;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 4px;
+        font-size: 14px;
+        transition: all 0.3s;
+    }
+
+    .btn-view:hover {
+        background: #138496;
+    }
+
+    /* Mode édition */
+    .edit-mode .info-value {
+        display: none;
+    }
+
+    .edit-mode .form-control {
+        display: block;
+    }
+
+    .view-mode .form-control {
+        display: none;
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+        .candidate-header {
+            flex-direction: column;
+            gap: 15px;
+            text-align: center;
+        }
+        
+        .candidate-body {
+            padding: 20px;
+        }
+        
+        .candidate-photo {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto;
+            display: block;
+        }
+        
+        .navigation-buttons {
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .document-actions {
+            flex-direction: column;
+        }
+    }
+
+    /* Messages */
+    .alert {
+        padding: 15px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+    }
+    
+    .alert-success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+    
+    .alert-error {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid candidate-detail-container">
+    <!-- Boutons de navigation -->
+    <div class="navigation-buttons">
+        <div>
+            <button class="btn-home" onclick="window.location.href='/'">
+                <i class="fa fa-home"></i> Accueil
+            </button>
+            <button class="btn-back" onclick="window.location.href='{% url 'homepartenaire_name' %}'">
+                <i class="fa fa-arrow-left"></i> Retour aux candidats
+            </button>
+        </div>
+        <div>
+            <button class="btn-logout" onclick="window.location.href='{% url 'logout' %}'">
+                <i class="fa fa-sign-out"></i> Déconnexion
+            </button>
+        </div>
+    </div>
+
+    <!-- En-tête de la page -->
+    <div class="detail-header">
+        <div class="d-flex justify-content-between align-items-center">
+            <h2 class="mb-0">Centre: {{ partenaireconnecte.nom_du_centre }}</h2>
+            <h5 class="mb-0">Partenaire: {{ partenaireconnecte.nom }}</h5>
+        </div>
+    </div>
+
+    <!-- Messages -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-error{% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <!-- Carte de détail du candidat -->
+    <div class="candidate-detail-card">
+        <div class="candidate-header">
+            <h3 class="mb-0">Détails du Candidat</h3>
+            <span class="candidate-status">
+                {% if candidat.statut in "V,Validé" %}
+                    <i class="fa fa-check-circle"></i> Validé
+                {% elif candidat.statut in "NV,Non Validé" %}
+                    <i class="fa fa-times-circle"></i> Non Validé
+                {% elif candidat.statut in "A,Approuvé" %}
+                    <i class="fa fa-certificate"></i> Approuvé
+                {% else %}
+                    <i class="fa fa-hourglass-half"></i> En attente
+                {% endif %}
+            </span>
+        </div>
+
+        <form method="post" enctype="multipart/form-data" class="view-mode" id="candidateForm">
+            {% csrf_token %}
+            <div class="candidate-body">
+                <div class="row">
+                    <!-- Photo et informations de base -->
+                    <div class="col-md-4 text-center mb-4">
+                        <img src="{{ candidat.photo_portrait.url }}" alt="Photo portrait" class="candidate-photo mb-3">
+                        <div class="file-upload-container">
+                            <label for="photo_portrait" class="file-upload-label">
+                                <div class="file-upload-icon">
+                                    <i class="fa fa-camera"></i>
+                                </div>
+                                <div>Changer la photo</div>
+                                <div class="small text-muted">Format JPG, PNG - Max 5MB</div>
+                            </label>
+                            <input type="file" class="d-none" id="photo_portrait" name="photo_portrait" accept="image/*">
+                        </div>
+                    </div>
+
+                    <!-- Informations personnelles -->
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-md-6 info-group">
+                                <div class="info-label">Nom</div>
+                                <div class="info-value">{{ candidat.nom }}</div>
+                                <input type="text" class="form-control" name="nom" value="{{ candidat.nom }}" required>
+                            </div>
+                            <div class="col-md-6 info-group">
+                                <div class="info-label">Prénom</div>
+                                <div class="info-value">{{ candidat.prenom }}</div>
+                                <input type="text" class="form-control" name="prenom" value="{{ candidat.prenom }}" required>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 info-group">
+                                <div class="info-label">Téléphone</div>
+                                <div class="info-value">{{ candidat.numero_telephone }}</div>
+                                <input type="tel" class="form-control" name="numero_telephone" value="{{ candidat.numero_telephone }}" required>
+                            </div>
+                            <div class="col-md-6 info-group">
+                                <div class="info-label">Ville de résidence</div>
+                                <div class="info-value">{{ candidat.ville_residence }}</div>
+                                <input type="text" class="form-control" name="ville_residence" value="{{ candidat.ville_residence }}" required>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 info-group">
+                                <div class="info-label">Langue usuelle</div>
+                                <div class="info-value">{{ candidat.langue_usuelle }}</div>
+                                <select class="form-control" name="langue_usuelle" required>
+                                    <option value="Français" {% if candidat.langue_usuelle == "Français" %}selected{% endif %}>Français</option>
+                                    <option value="Anglais" {% if candidat.langue_usuelle == "Anglais" %}selected{% endif %}>Anglais</option>
+                                    <option value="Espagnol" {% if candidat.langue_usuelle == "Espagnol" %}selected{% endif %}>Espagnol</option>
+                                    <option value="Arabe" {% if candidat.langue_usuelle == "Arabe" %}selected{% endif %}>Arabe</option>
+                                    <option value="Autre" {% if candidat.langue_usuelle == "Autre" %}selected{% endif %}>Autre</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 info-group">
+                                <div class="info-label">Budget (FCFA)</div>
+                                <div class="info-value">{{ candidat.budget }}</div>
+                                <input type="number" class="form-control" name="budget" value="{{ candidat.budget }}" min="0" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+
+                <!-- Documents d'identité -->
+                <h4 class="mb-4"><i class="fa fa-id-card"></i> Documents d'identité</h4>
+                <div class="row">
+                    <div class="col-md-6 info-group">
+                        <div class="info-label">Pièce d'identité (Recto)</div>
+                        <img src="{{ candidat.piece_identite_recto.url }}" alt="Pièce identité recto" class="document-image mb-2">
+                        <div class="file-upload-container">
+                            <label for="piece_identite_recto" class="file-upload-label">
+                                <div class="file-upload-icon">
+                                    <i class="fa fa-upload"></i>
+                                </div>
+                                <div>Changer le recto</div>
+                                <div class="small text-muted">Format JPG, PNG - Max 5MB</div>
+                            </label>
+                            <input type="file" class="d-none" id="piece_identite_recto" name="piece_identite_recto" accept="image/*">
+                        </div>
+                    </div>
+                    <div class="col-md-6 info-group">
+                        <div class="info-label">Pièce d'identité (Verso)</div>
+                        <img src="{{ candidat.piece_identite_verso.url }}" alt="Pièce identité verso" class="document-image mb-2">
+                        <div class="file-upload-container">
+                            <label for="piece_identite_verso" class="file-upload-label">
+                                <div class="file-upload-icon">
+                                    <i class="fa fa-upload"></i>
+                                </div>
+                                <div>Changer le verso</div>
+                                <div class="small text-muted">Format JPG, PNG - Max 5MB</div>
+                            </label>
+                            <input type="file" class="d-none" id="piece_identite_verso" name="piece_identite_verso" accept="image/*">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                    <div class="document-actions">
+                        <button type="button" class="btn-view" onclick="window.open('{{ candidat.piece_identite_recto.url }}', '_blank')">
+                            <i class="fa fa-eye"></i> Voir recto
+                        </button>
+                        <button type="button" class="btn-view" onclick="window.open('{{ candidat.piece_identite_verso.url }}', '_blank')">
+                            <i class="fa fa-eye"></i> Voir verso
+                        </button>
+                    </div>
+                    
+                    <div class="edit-actions">
+                        <button type="button" class="btn-cancel" id="cancelEdit" style="display: none;">
+                            <i class="fa fa-times"></i> Annuler
+                        </button>
+                        <button type="submit" class="btn-save" id="saveButton" style="display: none;">
+                            <i class="fa fa-save"></i> Enregistrer
+                        </button>
+                        <button type="button" class="edit-toggle" id="editToggle">
+                            <i class="fa fa-edit"></i> Modifier
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extrajs %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('candidateForm');
+        const editToggle = document.getElementById('editToggle');
+        const cancelEdit = document.getElementById('cancelEdit');
+        const saveButton = document.getElementById('saveButton');
+        const fileInputs = document.querySelectorAll('input[type="file"]');
+        
+        // Basculer entre mode visualisation et édition
+        editToggle.addEventListener('click', function() {
+            form.classList.toggle('view-mode');
+            form.classList.toggle('edit-mode');
+            
+            if (form.classList.contains('edit-mode')) {
+                editToggle.style.display = 'none';
+                cancelEdit.style.display = 'inline-block';
+                saveButton.style.display = 'inline-block';
+            }
+        });
+        
+        // Annuler l'édition
+        cancelEdit.addEventListener('click', function() {
+            form.classList.remove('edit-mode');
+            form.classList.add('view-mode');
+            
+            editToggle.style.display = 'inline-block';
+            cancelEdit.style.display = 'none';
+            saveButton.style.display = 'none';
+            
+            // Recharger la page pour annuler les modifications
+            location.reload();
+        });
+        
+        // Aperçu des images avant upload
+        function handleImagePreview(inputId, previewId) {
+            const input = document.getElementById(inputId);
+            const preview = document.getElementById(previewId);
+            
+            if (input && preview) {
+                input.addEventListener('change', function() {
+                    const file = this.files[0];
+                    if (file) {
+                        // Vérifier la taille du fichier (max 5MB)
+                        if (file.size > 5 * 1024 * 1024) {
+                            alert('Le fichier ne doit pas dépasser 5MB');
+                            this.value = '';
+                            return;
+                        }
+                        
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            preview.src = e.target.result;
+                        }
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+        }
+        
+        // Gestion de la soumission du formulaire
+        form.addEventListener('submit', function(e) {
+            // Validation basique côté client
+            const requiredFields = form.querySelectorAll('[required]');
+            let isValid = true;
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    isValid = false;
+                    field.style.borderColor = '#dc3545';
+                } else {
+                    field.style.borderColor = '#ced4da';
+                }
+            });
+            
+            if (!isValid) {
+                e.preventDefault();
+                alert('Veuillez remplir tous les champs obligatoires');
+            }
+        });
+    });
+</script>
+{% endblock %}

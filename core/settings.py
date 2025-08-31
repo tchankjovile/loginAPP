@@ -141,3 +141,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL= '/media/'
 MEDIA_ROOT= os.path.join(BASE_DIR, 'media/')
+
+#configuration pour l'envoie des mail aux utilisateurs
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"# smtp(simple mail trasfert protocol) protocol standard qui permet d'envoyer des mails
+EMAIL_PORT = 587 #port standart de SMTP avec cifremment TLS
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = "instituttcftefexpress@gmail.com"
+EMAIL_HOST_PASSWORD = "ftvj urhn qxsn uyyy"  # mon mdp application configuré sur Gmaail
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

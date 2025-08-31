@@ -1,0 +1,457 @@
+{% extends 'base.html'%}
+{% load static %}
+
+{% block extracss %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+    /* Styles spécifiques à la page d'ajout de candidat */
+    .candidate-form-container {
+        min-height: calc(100vh - 200px);
+        padding: 30px 0;
+        background-color: #f8f9fa;
+    }
+
+    .form-header {
+        background: linear-gradient(to right, #FF0000, #D40000);
+        color: white;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 25px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .navigation-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    .btn-home, .btn-logout {
+        padding: 10px 20px;
+        border-radius: 4px;
+        border: none;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        transition: all 0.3s;
+    }
+
+    .btn-home {
+        background: #f8f9fa;
+        color: #333;
+        border: 1px solid #dee2e6;
+    }
+
+    .btn-home:hover {
+        background: #e9ecef;
+    }
+
+    .btn-logout {
+        background: #333;
+        color: white;
+    }
+
+    .btn-logout:hover {
+        background: #555;
+    }
+
+    .candidate-form {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        padding: 30px;
+        margin-bottom: 30px;
+    }
+
+    .form-label {
+        font-weight: 500;
+        margin-bottom: 5px;
+        color: #333;
+    }
+
+    .form-control, .form-select {
+        border-radius: 6px;
+        padding: 12px 15px;
+        border: 1px solid #ced4da;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: #FF0000;
+        box-shadow: 0 0 0 0.2rem rgba(255, 0, 0, 0.25);
+    }
+
+    .file-upload-container {
+        border: 2px dashed #dee2e6;
+        border-radius: 8px;
+        padding: 20px;
+        text-align: center;
+        margin-bottom: 15px;
+        transition: border-color 0.3s;
+        background-color: #f8f9fa;
+    }
+
+    .file-upload-container:hover {
+        border-color: #FF0000;
+        background-color: #f1f1f1;
+    }
+
+    .file-upload-label {
+        cursor: pointer;
+        display: block;
+    }
+
+    .file-upload-icon {
+        font-size: 32px;
+        color: #6c757d;
+        margin-bottom: 10px;
+    }
+
+    .file-preview {
+        margin-top: 15px;
+        max-height: 200px;
+        display: none;
+        border-radius: 6px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .required-field::after {
+        content: "*";
+        color: #FF0000;
+        margin-left: 3px;
+    }
+
+    .btn-submit {
+        background: #FF0000;
+        color: white;
+        padding: 12px 30px;
+        border-radius: 6px;
+        border: none;
+        font-weight: bold;
+        display: block;
+        width: 100%;
+        margin-top: 20px;
+        transition: all 0.3s;
+    }
+
+    .btn-submit:hover {
+        background: #D40000;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+
+    .error-message {
+        color: #dc3545;
+        background-color: #f8d7da;
+        border: 1px solid #f5c6cb;
+        border-radius: 4px;
+        padding: 10px 15px;
+        margin-bottom: 20px;
+        display: none;
+    }
+
+    .success-message {
+        color: #155724;
+        background-color: #d4edda;
+        border: 1px solid #c3e6cb;
+        border-radius: 4px;
+        padding: 10px 15px;
+        margin-bottom: 20px;
+        display: none;
+    }
+
+    .upload-status {
+        font-size: 14px;
+        color: #6c757d;
+        margin-top: 5px;
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+        .candidate-form {
+            padding: 20px;
+        }
+
+        .form-header {
+            text-align: center;
+        }
+
+        .navigation-buttons {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .navigation-buttons div {
+            display: flex;
+            justify-content: center;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid candidate-form-container">
+    <!-- Boutons de navigation -->
+    <div class="navigation-buttons">
+        <div>
+            <button class="btn-home" onclick="window.location.href='/'">
+                <i class="fa fa-home"></i> Retour à l'accueil
+            </button>
+        </div>
+        <div>
+            <button class="btn-logout" onclick="window.location.href={% url 'logout' %}">
+                <i class="fa fa-sign-out"></i> Déconnexion
+            </button>
+        </div>
+    </div>
+
+    <!-- En-tête de la page -->
+    <div class="form-header">
+        <div class="d-flex justify-content-between align-items-center">
+            <h2 class="mb-0">Centre: {{ partenaireconnecte.nom_du_centre }}</h2>
+            <h5 class="mb-0">Partenaire: {{ partenaireconnecte.nom }}</h5>
+        </div>
+    </div>
+
+    <!-- Messages d'erreur/succès -->
+    <div class="error-message" id="errorMessage"></div>
+    <div class="success-message" id="successMessage"></div>
+
+    <!-- Formulaire d'ajout de candidat -->
+    <div class="candidate-form">
+        <h3 class="mb-4 text-center"><i class="fa fa-user-plus"></i> Ajouter un nouveau candidat</h3>
+
+        <form method="post" enctype="multipart/form-data" id="candidateForm">
+            {% csrf_token %}
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="nom_candidat" class="form-label required-field">Nom</label>
+                    <input type="text" class="form-control" id="nom_candidat" name="nom_candidat" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="prenom" class="form-label required-field">Prénom</label>
+                    <input type="text" class="form-control" id="prenom" name="prenom" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="telephone" class="form-label required-field">Numéro de téléphone</label>
+                    <input type="tel" class="form-control" id="telephone" name="telephone" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="ville_residence" class="form-label required-field">Ville de résidence</label>
+                    <input type="text" class="form-control" id="ville_residence" name="ville_residence" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="langue_usuelle" class="form-label required-field">Langue usuelle</label>
+                    <select class="form-select" id="langue_usuelle" name="langue_usuelle" required>
+                        <option value="" selected disabled>Sélectionnez une langue</option>
+                        <option value="Français">Français</option>
+                        <option value="Anglais">Anglais</option>
+                        <option value="Espagnol">Espagnol</option>
+                        <option value="Arabe">Arabe</option>
+                        <option value="Autre">Autre</option>
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="budget" class="form-label required-field">Budget (FCFA)</label>
+                    <input type="number" class="form-control" id="budget" name="budget" min="0" required>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label required-field">Photo de portrait</label>
+                <div class="file-upload-container">
+                    <label for="photo_portrait" class="file-upload-label">
+                        <div class="file-upload-icon">
+                            <i class="fa fa-camera"></i>
+                        </div>
+                        <div>Cliquez pour télécharger ou glisser-déposer la photo</div>
+                        <div class="upload-status">Format JPG, PNG - Max 5MB</div>
+                    </label>
+                    <input type="file" class="d-none" id="photo_portrait" name="photo_portrait" accept="image/*" required>
+                    <img id="portrait-preview" class="file-preview">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <label class="form-label required-field">Photo de la pièce d'identité (recto)</label>
+                    <div class="file-upload-container">
+                        <label for="piece_identite_recto" class="file-upload-label">
+                            <div class="file-upload-icon">
+                                <i class="fa fa-id-card"></i>
+                            </div>
+                            <div>Pièce d'identité - Recto</div>
+                            <div class="upload-status">Format JPG, PNG - Max 5MB</div>
+                        </label>
+                        <input type="file" class="d-none" id="piece_identite_recto" name="piece_identite_recto" accept="image/*" required>
+                        <img id="recto-preview" class="file-preview">
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <label class="form-label required-field">Photo de la pièce d'identité (verso)</label>
+                    <div class="file-upload-container">
+                        <label for="piece_identite_verso" class="file-upload-label">
+                            <div class="file-upload-icon">
+                                <i class="fa fa-id-card"></i>
+                            </div>
+                            <div>Pièce d'identité - Verso</div>
+                            <div class="upload-status">Format JPG, PNG - Max 5MB</div>
+                        </label>
+                        <input type="file" class="d-none" id="piece_identite_verso" name="piece_identite_verso" accept="image/*" required>
+                        <img id="verso-preview" class="file-preview">
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit">
+                <i class="fa fa-save"></i> Enregistrer le candidat
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extrajs %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('candidateForm');
+        const errorMessage = document.getElementById('errorMessage');
+        const successMessage = document.getElementById('successMessage');
+
+        // Gestion de l'aperçu des images
+        function handleImagePreview(inputId, previewId) {
+            const input = document.getElementById(inputId);
+            const preview = document.getElementById(previewId);
+
+            input.addEventListener('change', function() {
+                const file = this.files[0];
+                if (file) {
+                    // Vérifier la taille du fichier (max 5MB)
+                    if (file.size > 5 * 1024 * 1024) {
+                        showError('Le fichier ne doit pas dépasser 5MB');
+                        this.value = '';
+                        return;
+                    }
+
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        preview.src = e.target.result;
+                        preview.style.display = 'block';
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        // Initialiser les aperçus d'images
+        handleImagePreview('photo_portrait', 'portrait-preview');
+        handleImagePreview('piece_identite_recto', 'recto-preview');
+        handleImagePreview('piece_identite_verso', 'verso-preview');
+
+        // Gestion du drag and drop pour les uploads
+        const fileContainers = document.querySelectorAll('.file-upload-container');
+        fileContainers.forEach(container => {
+            container.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                this.style.borderColor = '#FF0000';
+                this.style.backgroundColor = '#e9ecef';
+            });
+
+            container.addEventListener('dragleave', function() {
+                this.style.borderColor = '#dee2e6';
+                this.style.backgroundColor = '#f8f9fa';
+            });
+
+            container.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.style.borderColor = '#dee2e6';
+                this.style.backgroundColor = '#f8f9fa';
+
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    const input = this.querySelector('input[type="file"]');
+                    input.files = files;
+
+                    // Déclencher l'événement change manuellement
+                    const event = new Event('change');
+                    input.dispatchEvent(event);
+                }
+            });
+        });
+
+        // Fonctions pour afficher les messages
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+            successMessage.style.display = 'none';
+
+            // Scroll to error message
+            errorMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function showSuccess(message) {
+            successMessage.textContent = message;
+            successMessage.style.display = 'block';
+            errorMessage.style.display = 'none';
+        }
+
+        // Validation du formulaire avant soumission
+        form.addEventListener('submit', function(e) {
+            // Cacher les messages précédents
+            errorMessage.style.display = 'none';
+            successMessage.style.display = 'none';
+
+            // Validation basique côté client
+            const requiredFields = form.querySelectorAll('[required]');
+            let isValid = true;
+            let errorMsg = '';
+
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    isValid = false;
+                    field.style.borderColor = '#dc3545';
+                    errorMsg = 'Veuillez remplir tous les champs obligatoires';
+                } else {
+                    field.style.borderColor = '#ced4da';
+                }
+            });
+
+            // Validation des fichiers
+            const fileInputs = [
+                document.getElementById('photo_portrait'),
+                document.getElementById('piece_identite_recto'),
+                document.getElementById('piece_identite_verso')
+            ];
+
+            fileInputs.forEach(input => {
+                if (!input.files || !input.files[0]) {
+                    isValid = false;
+                    errorMsg = 'Veuillez sélectionner tous les fichiers requis';
+                }
+            });
+
+            if (!isValid) {
+                e.preventDefault();
+                showError(errorMsg);
+            }
+        });
+
+        // Masquer les messages lorsqu'on modifie un champ
+        const formInputs = form.querySelectorAll('input, select');
+        formInputs.forEach(input => {
+            input.addEventListener('input', function() {
+                errorMessage.style.display = 'none';
+                successMessage.style.display = 'none';
+            });
+        });
+    });
+</script>
+{% endblock %}
